@@ -1,0 +1,6 @@
+# Archivos objeto generados por compilación
+*.o
+
+# Ejecutables generados
+*.out
+*.exe
