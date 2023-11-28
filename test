@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <getopt.h>
+
+
+/* monlog -s servicio1,servicio2 -t 1 */
+void print_help(char *command)
+{
+	fprintf(stderr,"Monitoreo en tiempo real de los archivos logs de un sistema GNU/Linux.\n");
+	fprintf(stderr,"uso:\n %s -s <service1,service2> [OPCIONES]\n", command);
+	fprintf(stderr," %s -h\n", command);
+	fprintf(stderr,"Opciones:\n");
+	fprintf(stderr," -h         \t\t\tAyuda, muestra este mensaje\n");
+	fprintf(stderr," -t [tiempo]\t\t\tSetea el tiempo de actualizacion (segundos), tiempo debe ser mayor de 0 y por defecto es 1.\n");
+	exit(2);
+	
+}
+
+int main(int argc, char **argv){
+	int opt,c,i;
+	int seconds=1;
+	char *services_par=NULL;
+	
+	/* Variables globales de getopt */
+  	extern char* optarg;
+  	extern int optind;
+  	extern int optopt;
+  	extern int opterr;
+  	opterr = 0;
+	
+	while((c = getopt(argc, argv, "s:t::h"))!=-1){
+		switch(c){
+			case 's':
+				printf("S\n");
+				services_par=optarg;
+				break;
+			case 't':
+				if(!optarg){
+					seconds=atoi(optarg);
+				}else{
+					fprintf(stderr,"Error en t");
+				}
+				break;
+			case 'h':
+				print_help(argv[0]);
+				break;
+			case '?':
+				if(strchr("s",optopt)!=NULL){
+					fprintf(stderr, "La opcion -%c requiere un argumento.\n",optopt);
+				}else if(optopt=='?'){
+					print_help(argv[0]);
+				}else if(isprint(optopt)){
+					fprintf(stderr, "Opcion desconocida '-%c'.\n", optopt);
+				}else{
+					fprintf(stderr, "Caracter no valido '\\x%x'.\n", optopt);
+				}
+				print_help(argv[0]);
+			
+		}		
+	}
+	/* Comprobar los services */
+	if(!services_par){
+		fprintf(stderr, "Debe especificar al menos 2 services de forma obligatoria!\n");
+		print_help(argv[0]);	
+	}else{
+		printf("services_par: %s\n", services_par);
+	}
+	
+	/* Comprobar el tiempo de actualizacion*/
+	if(seconds){
+		printf("seconds: %d.\n", seconds);
+	}
+	
+	for(i = optind; i < argc; i++){
+		printf("Ficheros que se enviaran %s\n", argv[i]);
+	}
+	
+	printf("\n\n");
+	return 0;
+	
+}
