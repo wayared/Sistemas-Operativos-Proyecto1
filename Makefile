@@ -16,7 +16,7 @@ prueba_stress.o: prueba_stress.c
 	gcc -c -o prueba_stress.o prueba_stress.c $(DFLAGS) -lpthread
 
 clean:
-	rm logmonitor *.o resultados.txt
+	rm logmonitor prueba_stress *.o resultados.txt
 
 .PHONY: debug
 debug: DFLAGS = -g
