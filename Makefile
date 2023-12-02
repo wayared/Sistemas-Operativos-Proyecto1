@@ -1,7 +1,4 @@
-all: init logmonitor prueba_stress
-
-init:
-	touch resultados.txt
+all: init logmonitor prueba_stress servidor
 
 logmonitor: logmonitor.o
 	gcc -o logmonitor logmonitor.o $(DFLAGS) -lpthread
