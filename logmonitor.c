@@ -220,25 +220,28 @@ int main(int argc, char **argv){
     
     dashboard(services_par, segundos, argv, argc, &services);
 
-    
+     while (1) { // Bucle infinito
     pthread_t hilos;
 
 	pthread_mutex_init(&mutex, NULL); // Inicializa el mutex
 
-// Crear una estructura para almacenar prioridad y servicios
-struct ThreadArgs threadArgs;
-threadArgs.prioridad = prioridad; // La prioridad capturada con -p
-threadArgs.servicios = services;  // Los servicios obtenidos
+    // Crear una estructura para almacenar prioridad y servicios
+    struct ThreadArgs threadArgs;
+    threadArgs.prioridad = prioridad; // La prioridad capturada con -p
+    threadArgs.servicios = services;  // Los servicios obtenidos
 
 
-// Crear un hilo y pasar la estructura ThreadArgs como argumento
-pthread_create(&hilos, NULL, wrapper_journal_exec, (void *)&threadArgs);
+    // Crear un hilo y pasar la estructura ThreadArgs como argumento
+    pthread_create(&hilos, NULL, wrapper_journal_exec, (void *)&threadArgs);
     
     /* Esperando hilos */
   
     pthread_join(hilos, NULL);
  
 	pthread_mutex_destroy(&mutex); // Destruye el mutex
+
+    sleep(segundos);
+    }
 
     
     printf(">> FIN\n");
