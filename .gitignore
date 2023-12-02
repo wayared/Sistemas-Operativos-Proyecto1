@@ -4,3 +4,5 @@
 # Ejecutables generados
 *.out
 *.exe
+# Archivos de respaldo
+*~
