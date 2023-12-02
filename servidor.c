@@ -12,6 +12,9 @@
 #include <sys/types.h>
 #include <ctype.h>
 
+#define READ_END 0
+#define WRITE_END 1
+
 char **parsear_servicios(char *line, char *separador);
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -47,12 +50,51 @@ void *wrapper_journal_exec(void *args) {
     return NULL;
 }
 
+void send_message(char *message) {
+    int pipe_fd[2]; // Array para los extremos del pipe
+
+    if (pipe(pipe_fd) == -1) { // Crear el pipe
+        perror("Error al crear el pipe");
+        exit(EXIT_FAILURE);
+    }
+
+    pid_t pid = fork(); // Crear un proceso hijo
+
+    if (pid < 0) {
+        perror("Error al crear el proceso hijo");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Estamos en el proceso hijo
+        close(pipe_fd[READ_END]); // Cerramos el extremo de lectura del hijo
+
+        // Escribir en el pipe
+        write(pipe_fd[WRITE_END], message, strlen(message) + 1);
+
+        close(pipe_fd[WRITE_END]); // Cerramos el extremo de escritura del hijo
+    } else {
+        // Estamos en el proceso padre
+        close(pipe_fd[WRITE_END]); // Cerramos el extremo de escritura del padre
+
+        char buffer[256]; // Buffer para almacenar el mensaje
+
+        // Leer del pipe
+        read(pipe_fd[READ_END], buffer, sizeof(buffer));
+
+        printf("Mensaje recibido en el padre: %s\n", buffer);
+
+        close(pipe_fd[READ_END]); // Cerramos el extremo de lectura del padre
+
+        wait(NULL); // Esperamos a que el proceso hijo termine
+    }
+}
 
 
 void dashboard(char *services_par, int segundos, char **argv, int argc, char ***services_ptr) {
     int i;
     extern int optind;
-    char **services_internal = NULL; 
+    char **services_internal = NULL;
+
+    send_message("Hola desde el servidor"); 
     /* Comprobar los servicios */
     if (!services_par) {
         fprintf(stderr, "Debe especificar solo 2 servicios\n");
