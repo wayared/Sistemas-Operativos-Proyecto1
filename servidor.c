@@ -1,7 +1,20 @@
 #include "servidor.h"
-#include <stdio.h>
+#include "logmonitor.h"
+#include <errno.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <getopt.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <ctype.h>
+
+char **parsear_servicios(char *line, char *separador);
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void *wrapper_journal_exec(void *args) {
     pthread_mutex_lock(&mutex); // Bloquea el mutex antes de acceder a recursos compartidos

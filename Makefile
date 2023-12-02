@@ -1,20 +1,26 @@
-all: init logmonitor prueba_stress servidor
+CC = gcc
+CFLAGS = -Wall -Wextra -pthread
 
-logmonitor: logmonitor.o
-	gcc -o logmonitor logmonitor.o $(DFLAGS) -lpthread
+all: logmonitor prueba_stress
 
-logmonitor.o: logmonitor.c
-	gcc -c -o logmonitor.o logmonitor.c $(DFLAGS) -lpthread
+logmonitor: logmonitor.o servidor.o
+	$(CC) -o logmonitor logmonitor.o servidor.o $(CFLAGS)
+
+logmonitor.o: logmonitor.c logmonitor.h servidor.h
+	$(CC) -c logmonitor.c -o logmonitor.o $(CFLAGS)
 
 prueba_stress: prueba_stress.o
-	gcc -o prueba_stress prueba_stress.o $(DFLAGS) -lpthread
+	$(CC) -o prueba_stress prueba_stress.o $(CFLAGS)
 
 prueba_stress.o: prueba_stress.c
-	gcc -c -o prueba_stress.o prueba_stress.c $(DFLAGS) -lpthread
+	$(CC) -c prueba_stress.c -o prueba_stress.o $(CFLAGS)
+
+servidor.o: servidor.c servidor.h logmonitor.h
+	$(CC) -c servidor.c -o servidor.o $(CFLAGS)
 
 clean:
-	rm logmonitor prueba_stress *.o resultados.txt
+	rm -f logmonitor prueba_stress *.o resultados.txt
 
 .PHONY: debug
-debug: DFLAGS = -g
-debug: clean logmonitor
+debug: CFLAGS += -g
+debug: clean logmonitor prueba_stress
