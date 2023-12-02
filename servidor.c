@@ -99,22 +99,22 @@ void dashboard(char *services_par, int segundos, char **argv, int argc, char ***
     if (!services_par) {
         fprintf(stderr, "Debe especificar solo 2 servicios\n");
     } else {
-        printf("services_par: %s\n", services_par);
+        printf("********************************Servicios parseados: %s********************\n", services_par);
         services_internal = parsear_servicios(services_par, ".");
         if (services_internal) {
-            printf("servicio_1: %s\n", services_internal[0]);
-            printf("servicio_2: %s\n", services_internal[1]);
+            printf("********************************Servicio 1: %s*************************************\n", services_internal[0]);
+            printf("********************************Servicio 2: %s***********************************\n", services_internal[1]);
             *services_ptr = services_internal; // Asignación directa a services_ptr
         }
     }
 
     /* Comprobar el tiempo de actualizacion*/
     if (segundos) {
-        printf("segundos: %d.\n", segundos);
+        printf("********************************Segundos: %d*******************************************\n", segundos);
     }
 
     for (i = optind; i < argc; i++) {
-        printf("Ficheros que se enviaran %s\n", argv[i]);
+        printf("********************************Ficheros que se enviaran %s*************************************\n", argv[i]);
     }
 
     printf(">> START\n");
