@@ -146,7 +146,8 @@ void journal_exec(int tiempo, char *prioridad, char **servicios) {
         // Agregar la opción de prioridad y un espacio
         strcat(command, "-p ");
         strcat(command, prioridad);
-        strcat(command, " ");
+        strcat(command, " -o cat");
+	strcat(command," ");
 
         // Imprime el comando para verificarlo
         printf("Comando final: %s\n", command);

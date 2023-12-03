@@ -8,35 +8,35 @@ int main() {
     int num_instances = 5;  // Número de instancias de cada servicio a ejecutar
 
     for (int i = 0; i < num_instances; ++i) {
-        pid_t pid_nginx = fork();
+        pid_t pid_ssh = fork();
 
-        if (pid_nginx == -1) {
+        if (pid_ssh == -1) {
             perror("Error al crear el proceso hijo (nginx)");
             exit(EXIT_FAILURE);
-        } else if (pid_nginx == 0) {
+        } else if (pid_ssh == 0) {
             // Estamos en el proceso hijo para nginx
-            char *nginx_args[] = {"nginx", NULL};
+            char *ssh_args[] = {"ssh", "usuario@localhost", NULL};
             
-            printf("Ejecutando instancia %d de nginx...\n", i + 1);
-            execvp("nginx", nginx_args);
+            printf("Ejecutando instancia %d de ssh...\n", i + 1);
+            execvp("ssh", ssh_args);
 
-            perror("Error al ejecutar nginx");
+            perror("Error al ejecutar ssh");
             exit(EXIT_FAILURE);
         }
 
-        pid_t pid_apache2 = fork();
+        pid_t pid_cups = fork();
 
-        if (pid_apache2 == -1) {
-            perror("Error al crear el proceso hijo (apache2)");
+        if (pid_cups == -1) {
+            perror("Error al crear el proceso hijo (sups)");
             exit(EXIT_FAILURE);
-        } else if (pid_apache2 == 0) {
+        } else if (pid_cups == 0) {
             // Estamos en el proceso hijo para apache2
-            char *apache2_args[] = {"apache2", NULL};
+            char *apache2_args[] = {"cups", NULL};
             
-            printf("Ejecutando instancia %d de apache2...\n", i + 1);
-            execvp("apache2", apache2_args);
+            printf("Ejecutando instancia %d de cups...\n", i + 1);
+            execvp("cups", apache2_args);
 
-            perror("Error al ejecutar apache2");
+            perror("Error al ejecutar cups");
             exit(EXIT_FAILURE);
         }
     }

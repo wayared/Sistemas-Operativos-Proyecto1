@@ -1,0 +1,5 @@
+dic 02 17:27:54 wayared-VirtualBox sshd[4036]: Server listening on 0.0.0.0 port 22.
+dic 02 17:27:54 wayared-VirtualBox sshd[4036]: Server listening on :: port 22.
+dic 02 17:27:54 wayared-VirtualBox systemd[1]: Started OpenBSD Secure Shell server.
+dic 02 17:53:14 wayared-VirtualBox sshd[5474]: Accepted password for wayared from 127.0.0.1 port 38912 ssh2
+dic 02 17:53:14 wayared-VirtualBox sshd[5474]: pam_unix(sshd:session): session opened for user wayared(uid=1000) by (uid=0)
